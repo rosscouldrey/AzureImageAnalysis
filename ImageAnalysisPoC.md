@@ -103,7 +103,7 @@ At time of writing (October 17, 2022) the following visual_features are supporte
 | Visual Feature| Definition|Link|
 |--------------|------------|---|
 |Categories| Categorizes image content according to a taxonomy defined in documentation | [Link](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-categorizing-images) |
-|Tags| Tags the image with a detailed list of words related to the image content|[Link]((https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-tagging-images)|
+|Tags| Tags the image with a detailed list of words related to the image content|[Link](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-tagging-images)|
 |Description| Describes the image content with a complete English sentence|[Link](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-describing-images)|
 |Faces| Detects if faces are present. If present, generate coordinates, gender and age| [Link](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-detecting-faces)|
 |ImageType| Detects if image is clipart or a line drawing| [Link](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-detecting-image-types)|
