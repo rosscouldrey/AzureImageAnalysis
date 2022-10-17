@@ -2,7 +2,7 @@
 
 ### Libraries
 
-`
+```python
 # Import required libraries
 
 from unittest import result
@@ -19,4 +19,4 @@ from PIL import Image
 import sys
 import time
 import pandas as pd
-`
+```
