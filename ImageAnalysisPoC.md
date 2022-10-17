@@ -73,8 +73,19 @@ if not any(mount.mountPoint == mp for mount in dbutils.fs.mounts()):
 #confirm mount
 #dbutils.fs.mounts()
 ```
+### Create ComputerVision Object
+
+We'll use the computer vision object to call the Cognitive service later in the script
+
+```python
+#create a computervision client
+computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(subscription_key))
+
+```
 
 ## Read Data
+
+Use pandas to read the URL list from the CSV file into a dataframe (called imagesDF)
 
 ```python
 
