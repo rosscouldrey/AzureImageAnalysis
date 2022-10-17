@@ -413,9 +413,6 @@ for _, row in imgDF.iterrows():
  ### Write Results to File
  
  ```python
- dt = datetime.now().strftime('%Y%m%d')
-dt = "testrunnew20220920"
-dir = 'mnt/data/output/'+dt+'/'
 
 #create directory if required
 if dir_exists(dir):
