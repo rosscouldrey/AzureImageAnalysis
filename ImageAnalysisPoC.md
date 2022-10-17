@@ -112,3 +112,175 @@ At time of writing (October 17, 2022) the following visual_features are supporte
 |[Objects](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-object-detection)| Detects various objects within an image, including the approximate location. The Objects argument is only available in English|
 |[Brands](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-brand-detection)| Detects various brands within an image, including the approximate location. The Brands argument is only available in English|
 
+Each function takes an ID and an imageanalysis object as parameters and returns a dataframe containing the parsed results.
+
+### Get Tags
+```python
+def get_tags(id, imganalysis):
+    
+    imgtagList = []
+    
+    #if no tags found create a 'None' entry
+    if(len(imganalysis.tags)==0):
+            return pd.DataFrame()
+            #imgtagList.append([img_url,'None',1])
+            #tempdf = pd.DataFrame({'imageurl':[img_url],'Tag':['None'],'Confidence':[1]}) 
+    else:
+        #when tags are found - loop through tags and parse each
+            for t in imganalysis.tags:
+                imgtagList.append([id,t.name,t.confidence])
+                #tempdf = pd.DataFrame({'imageurl':[img_url],'Tag':[t.name],'Confidence':[t.confidence]})
+                      
+                      
+    #return final list as dataframe
+    return pd.DataFrame(imgtagList, columns = ['imageID','Tag','Confidence'])  
+```
+
+### Get Brands
+```python
+
+#define function to parse brands from CognitiveServices Object
+
+def get_brands(id, imganalysis):
+    
+    brandlist = []
+    
+    if (len(imganalysis.brands)==0):
+        return pd.DataFrame()
+    else:
+        for brand in imganalysis.brands:
+            brandlist.append([id,brand.name,brand.confidence])
+    
+    return pd.DataFrame(brandlist, columns = ['imageID','Brand','Confidence'])
+
+```
+
+### Get Description
+
+```python
+
+#define a function to 
+def get_AIdescription (id, imganalysis):
+    
+    descriptionlist = []
+    
+    if(len(imganalysis.description.captions) == 0):
+           return pd.DataFrame()
+    else:
+       for desc in imganalysis.description.captions:
+           descriptionlist.append([id,desc.text,desc.confidence])
+       
+    return pd.DataFrame(descriptionlist, columns = ['imageID','Description','Confidence'])
+
+```
+
+### Get Colour Scheme
+
+``` python
+
+def get_ColourScheme (id, imganalysis):
+    
+    colourProfile = []
+    
+    colourProfile.append([id,"Dominant FG colour",imganalysis.color.dominant_color_foreground])
+    colourProfile.append([id,"Dominant BG colour",imganalysis.color.dominant_color_background])
+    colourProfile.append([id,"isBlackWhite",imganalysis.color.is_bw_img])
+    colourProfile.append([id,"AccentColour",imganalysis.color.accent_color])
+    if len(imganalysis.color.dominant_colors) == 0:
+      pass
+    else:
+        for c in imganalysis.color.dominant_colors:
+            colourProfile.append([id,"dominantcolour",c])
+    
+    return pd.DataFrame(colourProfile, columns = ['imageID','ColourAttribute','Value'])
+
+```
+
+### Get Objects
+
+```python
+
+def get_objects(id,imganalysis):
+    
+    objectlist = []
+    
+    if(len(imganalysis.objects)==0):
+        return pd.DataFrame()
+    else:
+        for obj in imganalysis.objects:
+            objectlist.append([id,obj.object_property,obj.confidence])
+    
+    return pd.DataFrame(objectlist, columns = ['imageID','Object','Confidence'])
+
+```
+
+### Get Categories
+
+```python
+
+def get_categories(id,imganalysis):
+    
+    catList = []
+    
+    if (len(imganalysis.categories)==0):
+        return pd.DataFrame()
+    else:
+        for cat in imganalysis.categories:
+            catList.append([id,cat.name,cat.score])
+    
+    return pd.DataFrame(catList, columns = ['imageID','Category','Score'])
+
+```
+
+### Get Adult Content
+
+```python
+
+def get_adultContent(id,imganalysis):
+    
+    adultcontentList = []
+    
+    adultcontentList.append([id,"is_adult_content",imganalysis.adult.is_adult_content,imganalysis.adult.adult_score])
+    adultcontentList.append([id,"is_racy_content",imganalysis.adult.is_racy_content,imganalysis.adult.racy_score])
+    adultcontentList.append([id,"is_gory_content",imganalysis.adult.is_gory_content,imganalysis.adult.gore_score])
+    
+    return pd.DataFrame(adultcontentList, columns = ['imageID','Attribute','Value','Score'])
+
+```
+
+### Get Text
+
+```python
+
+def get_textfromimage(id,url):
+    textinimage = []
+    numberOfCharsInOperationId = 36
+
+    # SDK call
+    try:
+        rawHttpResponse = computervision_client.read(url, language="en", raw=True)
+
+        # Get ID from returned headers
+        operationLocation = rawHttpResponse.headers["Operation-Location"]
+        idLocation = len(operationLocation) - numberOfCharsInOperationId
+        operationId = operationLocation[idLocation:]
+
+        # SDK call
+        OCRresult = computervision_client.get_read_result(operationId)
+
+        #loop until status code is no longer "running"
+        while(OCRresult.status == OperationStatusCodes.running):
+            OCRresult = computervision_client.get_read_result(operationId)
+
+        # Get data
+        if OCRresult.status == OperationStatusCodes.succeeded:
+            for line in OCRresult.analyze_result.read_results[0].lines:
+                textinimage.append([id,line.text])
+
+        return pd.DataFrame(textinimage, columns = ['imageID','Text'])
+    
+    except:
+        print("OCR error: " + url)
+        return pd.DataFrame()
+
+```
