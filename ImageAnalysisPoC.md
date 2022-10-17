@@ -285,3 +285,168 @@ def get_textfromimage(id,url):
         return pd.DataFrame()
 
 ```
+
+### Other Functions
+
+#### Write to file
+
+```python
+#Export DFs to files for storage
+def writetofile(df, path, name):
+    
+    filename = str(path) + name + '.csv'
+    print(filename)
+    
+    try:
+        dbutils.fs.cp(filename, 'file:/tmp/' + name + '.csv')
+        with open('/tmp/tags.csv', 'a') as f:
+           df.to_csv(f, header=False)
+        dbutils.fs.mv("file:/tmp/tags.csv","dbfs:/mnt/dev/tmp/ml_p/tags.csv")
+       
+    except error:
+        print("error writing to file " + filename)
+```
+
+### Directory Exists Function
+
+```python
+#create a custom function to determine if directory already exists
+def dir_exists(dir):
+  try:
+    dbutils.fs.ls(dir)
+  except:
+    return False  
+  return True
+ ```
+ 
+ ### File Exists Function
+ 
+ ```python
+ 
+ def file_exists(filepath):
+    try:
+        dbutils.fs.ls(filepath)
+    except:
+        return False
+    return True
+ 
+ ```
+ 
+ ## Main Program
+ 
+ ### Define features for use
+ 
+ ```python
+ 
+ #define the features to request from the cognitive services endpoint
+features = [VisualFeatureTypes.color,  #get the color schema
+            VisualFeatureTypes.categories, #determine categories
+            VisualFeatureTypes.description, #generate an AI description of the visual
+            VisualFeatureTypes.objects, #identify and locate objects in the picture
+            VisualFeatureTypes.brands, #extract any brands found
+            VisualFeatureTypes.tags, #tag image
+            VisualFeatureTypes.adult] #determine adult content and gore
+ 
+ ```
+ 
+ ### Determine Development Status
+ The purpose of this section is to check the development flag widget and sample our data if we're in development.  This avoids processing all of our images while in Dev/Test mode.  If you're using a small file of image URLs this is not required.
+ 
+ ```python
+ 
+ isDevelopment = dbutils.widgets.get("Development Flag")
+
+#controls how many records to use in testing/dev
+samplesize =  int(dbutils.widgets.get("Dev Sample Size"))
+
+
+if isDevelopment == "True":
+    imgDF = imagesDF.sample(samplesize)
+else:
+    imgDF = imagesDF
+ 
+ ```
+ 
+ ### Run Analysis
+ 
+ ```python
+ 
+#Export DFs to files for storage
+
+# define lists for image analysis return dataframes
+tagsDFList = []
+brandsDFList = []
+descriptionDFList = []
+colourProfileDFList = []
+objectDFList = []
+catDFList = []
+adultDFList = []
+textDFList = []
+
+errorList = []
+
+#itterate through our images Dataframe getting each URL and passing to the Cognitive Services Endpoint.
+#in my example style_colour was the name of the unique ID field in my URL dataset.  You should update the ID variable to hold your own unique ID.
+for _, row in imgDF.iterrows():
+
+    url = "http:" + row.url 
+    id = row.style_colour  #UPDATE THIS
+
+    try:
+        result = computervision_client.analyze_image(url,features)
+    except:
+        print("error with URL: " + url)
+        errorList.append(url)
+        continue
+
+    tagsDFList.append(get_tags(id,result))
+    brandsDFList.append(get_brands(id,result))
+    descriptionDFList.append(get_AIdescription(id,result))
+    colourProfileDFList.append(get_ColourScheme(id,result))
+    objectDFList.append(get_objects(id,result))
+    catDFList.append(get_categories(id,result))
+    adultDFList.append(get_adultContent(id,result))
+    textDFList.append(get_textfromimage(id,url))
+ 
+ ```
+ 
+ ### Write Results to File
+ 
+ ```python
+ dt = datetime.now().strftime('%Y%m%d')
+dt = "testrunnew20220920"
+dir = 'mnt/data/output/'+dt+'/'
+
+#create directory if required
+if dir_exists(dir):
+    pass
+else:
+    dbutils.fs.mkdirs(dir)
+
+path = '/dbfs/' + dir  
+
+if(not len(tagsDFList) ==0):
+    tagsDF = pd.concat(tagsDFList)
+    tagsDF.to_csv(str(path) + 'tags.csv', header=True, index = False)
+if(not len(brandsDFList) ==0):
+    brandsDF = pd.concat(brandsDFList)
+    brandsDF.to_csv(str(path) + 'brands.csv', header=True, index = False)
+if(not len(descriptionDFList) ==0):
+    descriptionDF = pd.concat(descriptionDFList)
+    descriptionDF.to_csv(str(path) + 'description.csv', header=True, index = False)
+if(not len(colourProfileDFList) ==0):
+    colourProfileDF = pd.concat(colourProfileDFList)
+    colourProfileDF.to_csv(str(path) + 'colours.csv', header=True, index = False)
+if(not len(objectDFList) ==0):
+    objectDF = pd.concat(objectDFList)
+    objectDF.to_csv(str(path) + 'objects.csv', header=True, index = False)
+if(not len(catDFList) ==0):
+    categoryDF = pd.concat(catDFList)
+    categoryDF.to_csv(str(path) + 'categories.csv', header=True, index = False)
+if(not len(adultDFList) ==0):
+    adultDF = pd.concat(adultDFList)
+    adultDF.to_csv(str(path) + 'adult.csv', header=True, index = False)
+if(not len(textDFList) ==0):
+    textDF = pd.concat(textDFList)
+    textDF.to_csv(str(path) + 'texts.csv', header=True, index = False)
+ ```
