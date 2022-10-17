@@ -100,6 +100,15 @@ We define a number of functions to deal with our return data from the cognitive 
 
 At time of writing (October 17, 2022) the following visual_features are supported:
 
-| Viual Feature| Definition|link|
+| Visual Feature| Definition|Link|
 |--------------|------------|---|
-|Categories| categorizes image content according to a taxonomy defined in documentation | [link](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-categorizing-images) 
+|Categories| Categorizes image content according to a taxonomy defined in documentation | [Link](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-categorizing-images) |
+|Tags| Tags the image with a detailed list of words related to the image content|[Link]((https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-tagging-images)|
+|Description| Describes the image content with a complete English sentence|[Link](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-describing-images)|
+|Faces| Detects if faces are present. If present, generate coordinates, gender and age| [Link](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-detecting-faces)|
+|ImageType| Detects if image is clipart or a line drawing| [Link](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-detecting-image-types)|
+|Color| Determines the accent color, dominant color, and whether an image is black&white| [Link](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-detecting-color-schemes)|
+|Adult| Detects if the image is pornographic in nature (depicts nudity or a sex act), or is gory (depicts extreme violence or blood). Sexually suggestive content (aka racy content) is also detected| [Link](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-detecting-adult-content)
+|Objects| Detects various objects within an image, including the approximate location. The Objects argument is only available in English| [Link](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-object-detection)|
+|Brands| Detects various brands within an image, including the approximate location. The Brands argument is only available in English| [Link](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-brand-detection)|
+
