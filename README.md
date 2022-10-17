@@ -26,3 +26,6 @@ Please obtain the following information from your Azure Subscription before proc
 ### Service Principal
 - Application ID
 - Secret
+
+## Code
+All code for this exercise is contained in [ImageAnalysisPoC.md](https://github.com/rosscouldrey/AzureImageAnalysis/blob/main/ImageAnalysisPoC.md)
