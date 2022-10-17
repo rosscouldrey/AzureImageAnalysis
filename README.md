@@ -13,7 +13,7 @@ This script requires that you have access to
 Please obtain the following information from your Azure Subscription before proceeding as these are required to set up the variables at the start of the script.
 
 1. Tenant Details
-a. TenantID
+<ul> TenantID </ul>
 
 1. Storage Account Details
 a. Storage Account Name
