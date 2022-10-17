@@ -93,3 +93,13 @@ Use pandas to read the URL list from the CSV file into a dataframe (called image
 imagesDF = pd.read_csv("/dbfs/mnt/data/"+imagescsv+".csv")
 
 ```
+
+## Functions
+
+We define a number of functions to deal with our return data from the cognitive service.  Depending on the visual_features parameter we send to the service, we will recieve various responses, each of which can be parsed seperately using these functions.
+
+At time of writing (October 17, 2022) the following visual_features are supported:
+
+| Viual Feature| Definition|link|
+|--------------|------------|---|
+|Categories| categorizes image content according to a taxonomy defined in documentation | [link](https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/concept-categorizing-images) 
