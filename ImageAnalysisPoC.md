@@ -96,6 +96,7 @@ imagesDF = pd.read_csv("/dbfs/mnt/data/"+imagescsv+".csv")
 
 ## Functions
 
+### Cognitive Services Parsing Functions
 We define a number of functions to deal with our return data from the cognitive service.  Depending on the visual_features parameter we send to the service, we will recieve various responses, each of which can be parsed seperately using these functions.
 
 At time of writing (October 17, 2022) the following visual_features are supported:
@@ -114,7 +115,7 @@ At time of writing (October 17, 2022) the following visual_features are supporte
 
 Each function takes an ID and an imageanalysis object as parameters and returns a dataframe containing the parsed results.
 
-### Get Tags
+#### Get Tags
 ```python
 def get_tags(id, imganalysis):
     
@@ -136,7 +137,7 @@ def get_tags(id, imganalysis):
     return pd.DataFrame(imgtagList, columns = ['imageID','Tag','Confidence'])  
 ```
 
-### Get Brands
+#### Get Brands
 ```python
 
 #define function to parse brands from CognitiveServices Object
@@ -155,7 +156,7 @@ def get_brands(id, imganalysis):
 
 ```
 
-### Get Description
+#### Get Description
 
 ```python
 
@@ -174,7 +175,7 @@ def get_AIdescription (id, imganalysis):
 
 ```
 
-### Get Colour Scheme
+#### Get Colour Scheme
 
 ``` python
 
@@ -196,7 +197,7 @@ def get_ColourScheme (id, imganalysis):
 
 ```
 
-### Get Objects
+#### Get Objects
 
 ```python
 
@@ -214,7 +215,7 @@ def get_objects(id,imganalysis):
 
 ```
 
-### Get Categories
+#### Get Categories
 
 ```python
 
@@ -232,7 +233,7 @@ def get_categories(id,imganalysis):
 
 ```
 
-### Get Adult Content
+#### Get Adult Content
 
 ```python
 
@@ -248,7 +249,7 @@ def get_adultContent(id,imganalysis):
 
 ```
 
-### Get Text
+#### Get Text
 
 ```python
 
