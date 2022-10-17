@@ -12,10 +12,10 @@ This script requires that you have access to
 
 Please obtain the following information from your Azure Subscription before proceeding as these are required to set up the variables at the start of the script.
 
-1. Tenant Details
+1. ### Tenant Details
 - TenantID
 
-2. Storage Account Details
+2. ### Storage Account Details
 - Storage Account Name
 - Storage account key (SAS key)
 - Container Name
