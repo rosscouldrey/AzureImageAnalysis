@@ -334,6 +334,8 @@ def dir_exists(dir):
  
  ### Define features for use
  
+ Here we create an array of the various VisualFeatureTypes we'd like to extract from our images. We will pass this array to the `analyze_image()` function when called to return the required information about the image.
+ 
  ```python
  
  #define the features to request from the cognitive services endpoint
