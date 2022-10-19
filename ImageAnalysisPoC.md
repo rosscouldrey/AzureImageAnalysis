@@ -307,7 +307,7 @@ def writetofile(df, path, name):
         print("error writing to file " + filename)
 ```
 
-### Directory Exists Function
+#### Directory Exists Function
 
 ```python
 #create a custom function to determine if directory already exists
@@ -319,7 +319,7 @@ def dir_exists(dir):
   return True
  ```
  
- ### File Exists Function
+ #### File Exists Function
  
  ```python
  
