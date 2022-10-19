@@ -124,14 +124,10 @@ def get_tags(id, imganalysis):
     #if no tags found create a 'None' entry
     if(len(imganalysis.tags)==0):
             return pd.DataFrame()
-            #imgtagList.append([img_url,'None',1])
-            #tempdf = pd.DataFrame({'imageurl':[img_url],'Tag':['None'],'Confidence':[1]}) 
     else:
         #when tags are found - loop through tags and parse each
             for t in imganalysis.tags:
-                imgtagList.append([id,t.name,t.confidence])
-                #tempdf = pd.DataFrame({'imageurl':[img_url],'Tag':[t.name],'Confidence':[t.confidence]})
-                      
+                imgtagList.append([id,t.name,t.confidence])                   
                       
     #return final list as dataframe
     return pd.DataFrame(imgtagList, columns = ['imageID','Tag','Confidence'])  
@@ -250,6 +246,8 @@ def get_adultContent(id,imganalysis):
 ```
 
 #### Get Text
+
+The `get_text()` function is created slightly differently than the rest (although it didn't have to be).  To retrieve text from the image we use the `.read` function of the computer vision object instead of the `.analyze_image` function.  To keep the code in the main function clean I have opted to pass a url and call the `.read` function inside the `get_text()` function.
 
 ```python
 
